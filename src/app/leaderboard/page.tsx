@@ -10,6 +10,8 @@ export default async function LeaderboardPage() {
         .orderBy(desc(leaderboard.score), desc(leaderboard.id))
         .limit(10);
 
+    console.log(initialScores);
+
     return (
         <main className="page-shell flex flex-col items-center">
             <div className="w-full max-w-2xl border-2 border-[#00ff00] bg-[#1e1e1e] p-6 shadow-[0_0_20px_rgba(0,255,0,0.2)]">
