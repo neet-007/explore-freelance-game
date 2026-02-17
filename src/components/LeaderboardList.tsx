@@ -3,10 +3,16 @@
 import { useState } from "react";
 import { fetchMoreScores } from "@/app/actions";
 
-export default function LeaderboardList({ initialScores }: { initialScores: any[] }) {
+type ScoreEntry = {
+    id: number;
+    username: string;
+    score: number;
+};
+
+export default function LeaderboardList({ initialScores }: { initialScores: ScoreEntry[] }) {
     const [scores, setScores] = useState(initialScores);
     const [offset, setOffset] = useState(initialScores.length);
-    const [hasMore, setHasMore] = useState(true);
+    const [hasMore, setHasMore] = useState(initialScores.length >= 10);
     const [isLoading, setIsLoading] = useState(false);
 
     const loadMore = async () => {
@@ -25,32 +31,36 @@ export default function LeaderboardList({ initialScores }: { initialScores: any[
 
     return (
         <>
-            <table className="w-full text-left">
+            <table className="w-full text-left text-lg md:text-xl">
                 <thead>
-                    <tr className="text-gray-500 text-xs uppercase">
-                        <th className="pb-4">Rank</th>
-                        <th className="pb-4">Alias</th>
-                        <th className="pb-4 text-right">Score</th>
+                    <tr className="text-base uppercase text-[#6ea66e] md:text-lg">
+                        <th className="pb-4 font-medium">Rank</th>
+                        <th className="pb-4 font-medium">Alias</th>
+                        <th className="pb-4 text-right font-medium">Score</th>
                     </tr>
                 </thead>
                 <tbody>
                     {scores.map((entry, index) => (
                         <tr key={entry.id} className="border-t border-[#333] hover:bg-black/40">
-                            <td className="py-3 text-gray-500">#{String(index + 1).padStart(2, '0')}</td>
-                            <td className="py-3 text-white font-bold">{entry.username}</td>
-                            <td className="py-3 text-[#00ff00] text-right font-bold">${entry.score}</td>
+                            <td className="py-3 text-[#6ea66e]">#{String(index + 1).padStart(2, "0")}</td>
+                            <td className="py-3 font-bold text-white">{entry.username}</td>
+                            <td className="py-3 text-right font-bold text-[#00ff00]">{entry.score}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
 
+            {scores.length === 0 && (
+                <p className="pt-3 text-lg text-[#6ea66e]">No scores yet. Be the first to finish a run.</p>
+            )}
+
             {hasMore && (
                 <button
                     onClick={loadMore}
                     disabled={isLoading}
-                    className="w-full mt-6 py-2 border border-[#00ff00] text-[#00ff00] hover:bg-[#00ff00] hover:text-black transition-all disabled:opacity-50"
+                    className="mt-6 w-full border border-[#00ff00] bg-[#0f2b0f] py-3 text-xl font-semibold text-[#00ff00] transition hover:bg-[#00ff00] hover:text-black hover:shadow-[0_0_14px_rgba(0,255,0,0.5)] disabled:opacity-50"
                 >
-                    {isLoading ? "FETCHING_DATA..." : "LOAD_MORE_RECORDS"}
+                    {isLoading ? "Loading..." : "Load More"}
                 </button>
             )}
         </>

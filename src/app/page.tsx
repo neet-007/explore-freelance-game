@@ -2,36 +2,33 @@ import Link from "next/link";
 
 export default function Home() {
     return (
-        <main className="min-h-[80vh] flex flex-col items-center justify-center font-mono p-6">
-            <div className="max-w-2xl w-full border-2 border-[#00ff00] bg-[#1e1e1e] p-10 shadow-[0_0_30px_rgba(0,255,0,0.15)] text-center">
-                <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tighter text-[#00ff00]">
-                    THE_FREELANCE_GRIND
+        <main className="page-shell flex items-center justify-center">
+            <div className="w-full max-w-3xl border-2 border-[#00ff00] bg-[#1e1e1e] p-8 text-center shadow-[0_0_30px_rgba(0,255,0,0.15)] md:p-10">
+                <h1 className="mb-5 text-4xl font-bold text-[#00ff00] md:text-6xl">
+                    THE FREELANCE GRIND
                 </h1>
-
-                <div className="mb-8 text-left space-y-4 text-sm md:text-base border-l-2 border-[#333] pl-6 py-2">
-                    <p className="text-white">
-                        <span className="text-[#00ff00] tracking-widest">[SYSTEM]:</span> INCOMING CONNECTION DETECTED.
+                <div className="mb-8 border-l-2 border-[#333] py-2 pl-5 text-left">
+                    <p className="mb-3 text-lg text-white md:text-xl">
+                        <span className="text-[#00ff00]">[SYSTEM]:</span> INCOMING CONNECTION DETECTED.
                     </p>
-                    <p className="text-gray-400">
-                        Welcome to the simulation. Your goal is simple: Survive the freelance market.
-                        Manage your <span className="text-[#00ff00]">Money</span>, protect your <span className="text-[#00ff00]">Energy</span>, and build your <span className="text-[#00ff00]">Reputation</span>.
+                    <p className="mb-3 text-lg text-[#9ad79a] md:text-xl">
+                        Survive the market. Your choices adjust Money, Energy, and Reputation.
                     </p>
-                    <p className="text-red-500 animate-pulse">
-                        ! WARNING: Burnout or Bankruptcy will terminate your session.
+                    <p className="text-lg text-red-400 md:text-xl">
+                        WARNING: Session ends when money or energy hits zero, or timer runs out.
                     </p>
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-4 justify-center">
+                <div className="flex flex-col gap-3 md:flex-row md:justify-center">
                     <Link
                         href="/play"
-                        className="px-8 py-3 border-2 border-[#00ff00] text-[#00ff00] font-bold text-xl hover:bg-[#00ff00] hover:text-black transition-all duration-300"
+                        className="border-2 border-[#00ff00] bg-[#0f2b0f] px-8 py-3 text-center text-xl font-bold text-[#00ff00] transition hover:bg-[#00ff00] hover:text-black hover:shadow-[0_0_14px_rgba(0,255,0,0.5)]"
                     >
                         INITIALIZE_GAME
                     </Link>
-
                     <Link
                         href="/leaderboard"
-                        className="px-8 py-3 border border-white text-white font-bold text-xl hover:bg-white hover:text-black transition-all duration-300"
+                        className="border border-[#00ff00] bg-[#0f2b0f] px-8 py-3 text-center text-xl font-bold text-[#00ff00] transition hover:bg-[#00ff00] hover:text-black hover:shadow-[0_0_14px_rgba(0,255,0,0.5)]"
                     >
                         VIEW_RANKINGS
                     </Link>

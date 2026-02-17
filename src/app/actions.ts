@@ -1,74 +1,46 @@
-"use server"
+"use server";
+
 import { db } from "@/db";
-import { questions, options } from "@/db/schema";
-import { eq, aliasedTable, desc } from "drizzle-orm";
 import { leaderboard } from "@/db/schema";
+import {
+  Answer,
+  computeStatsFromAnswers,
+  getScore,
+} from "@/lib/game-shared";
+import { getGameQuestions } from "@/lib/game";
+import { desc } from "drizzle-orm";
 
-type Answer = {
-    id: number;
-    choice: "A" | "B";
-}
+export async function recalculateStats(answers: Answer[]) {
+  const gameQuestions = await getGameQuestions();
+  const stats = computeStatsFromAnswers(gameQuestions, answers);
 
-async function getGameQuestions() {
-    const optA = aliasedTable(options, "optA");
-    const optB = aliasedTable(options, "optB");
-
-    const results = await db
-        .select({
-            id: questions.id,
-            text: questions.text,
-            optionA: {
-                label: optA.label,
-                money: optA.money,
-                energy: optA.energy,
-                rep: optA.rep,
-            },
-            optionB: {
-                label: optB.label,
-                money: optB.money,
-                energy: optB.energy,
-                rep: optB.rep,
-            },
-        })
-        .from(questions)
-        .leftJoin(optA, eq(questions.optionAId, optA.id))
-        .leftJoin(optB, eq(questions.optionBId, optB.id));
-
-    return results;
+  return {
+    ...stats,
+    isBroke: stats.money <= 0,
+    isBurnedOut: stats.energy <= 0,
+  };
 }
 
 export async function submitScore(username: string, answers: Answer[]) {
-    const questions = await getGameQuestions();
-    let money = 100;
-    let energy = 100;
-    let rep = 100;
+  const cleanUsername = username.trim();
+  if (!cleanUsername) {
+    return { ok: false as const, error: "Username is required." };
+  }
 
-    for (const answer of answers) {
-        const question = questions.find(q => q.id === answer.id);
-        if (!question) continue;
+  const gameQuestions = await getGameQuestions();
+  const stats = computeStatsFromAnswers(gameQuestions, answers);
+  const score = getScore(stats);
 
-        if (answer.choice === "A") {
-            money += question.optionA!.money;
-            energy += question.optionA!.energy;
-            rep += question.optionA!.rep;
-        } else {
-            money += question.optionB!.money;
-            energy += question.optionB!.energy;
-            rep += question.optionB!.rep;
-        }
-    }
+  await db.insert(leaderboard).values({ username: cleanUsername, score });
 
-    const score = Math.max((money + energy + rep) / 3, 0);
-    await db.insert(leaderboard).values({ username, score });
-
-    console.log("Score saved!");
+  return { ok: true as const, score };
 }
 
-export async function fetchMoreScores(offset: number, limit: number = 10) {
-    return await db
-        .select()
-        .from(leaderboard)
-        .orderBy(desc(leaderboard.score))
-        .limit(limit)
-        .offset(offset);
+export async function fetchMoreScores(offset: number, limit = 10) {
+  return db
+    .select()
+    .from(leaderboard)
+    .orderBy(desc(leaderboard.score), desc(leaderboard.id))
+    .limit(limit)
+    .offset(offset);
 }
