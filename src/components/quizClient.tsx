@@ -20,9 +20,9 @@ export default function QuizClient({
     timeLimitSeconds: number;
 }) {
     const [currentIdx, setCurrentIdx] = useState(0);
-    const [energy, setEnergy] = useState(INITIAL_STATS.energy);
-    const [money, setMoney] = useState(INITIAL_STATS.money);
-    const [rep, setRep] = useState(INITIAL_STATS.rep);
+    const [energy, setEnergy] = useState<number>(INITIAL_STATS.energy);
+    const [money, setMoney] = useState<number>(INITIAL_STATS.money);
+    const [rep, setRep] = useState<number>(INITIAL_STATS.rep);
     const [answers, setAnswers] = useState<Answer[]>([]);
     const [secondsLeft, setSecondsLeft] = useState(timeLimitSeconds);
     const [isSubmitting, setIsSubmitting] = useState(false);
