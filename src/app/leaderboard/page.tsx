@@ -2,15 +2,19 @@ import { db } from "@/db";
 import { leaderboard } from "@/db/schema";
 import { desc } from "drizzle-orm";
 import LeaderboardList from "@/components/LeaderboardList";
+import { unstable_noStore as noStore } from "next/cache";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function LeaderboardPage() {
+    noStore();
+
     const initialScores = await db
         .select()
         .from(leaderboard)
         .orderBy(desc(leaderboard.score), desc(leaderboard.id))
         .limit(10);
-
-    console.log(initialScores);
 
     return (
         <main className="page-shell flex flex-col items-center">

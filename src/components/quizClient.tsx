@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { recalculateStats, submitScore } from "@/app/actions";
+import { submitScore } from "@/app/actions";
 import Link from "next/link";
 import {
     Answer,
@@ -65,32 +65,34 @@ export default function QuizClient({
     const currentQuestion = questions[currentIdx];
     const roundsPlayed = useMemo(() => answers.length, [answers.length]);
 
-    const handleAnswer = async (selected: "A" | "B") => {
+    const handleAnswer = (selected: "A" | "B") => {
         if (!currentQuestion || finishReason || isSubmitting) return;
+        const selectedOption = selected === "A" ? currentQuestion.optionA : currentQuestion.optionB;
+        if (!selectedOption) return;
 
         const newAnswers = [...answers, { id: currentQuestion.id, choice: selected }];
+        const newMoney = money + selectedOption.money;
+        const newEnergy = energy + selectedOption.energy;
+        const newRep = rep + selectedOption.rep;
         setIsSubmitting(true);
 
-        try {
-            const updated = await recalculateStats(newAnswers);
+        setMoney(newMoney);
+        setEnergy(newEnergy);
+        setRep(newRep);
+        setAnswers(newAnswers);
 
-            setMoney(updated.money);
-            setEnergy(updated.energy);
-            setRep(updated.rep);
-            setAnswers(newAnswers);
-
-            if (updated.isBroke) {
-                setFinishReason("money");
-                return;
-            }
-            if (updated.isBurnedOut) {
-                setFinishReason("energy");
-                return;
-            }
-            setCurrentIdx((prev) => (prev + 1) % questions.length);
-        } finally {
+        if (newMoney <= 0) {
+            setFinishReason("money");
             setIsSubmitting(false);
+            return;
         }
+        if (newEnergy <= 0) {
+            setFinishReason("energy");
+            setIsSubmitting(false);
+            return;
+        }
+        setCurrentIdx((prev) => (prev + 1) % questions.length);
+        setIsSubmitting(false);
     };
 
     if (finishReason) {
