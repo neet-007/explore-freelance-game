@@ -131,7 +131,7 @@ export default function QuizClient({
                 <p className="mb-5 text-xl font-bold text-[#00ff00]">{title.toUpperCase()}</p>
                 <Link
                     href="/leaderboard"
-                    className="inline-block border border-[#00ff00] bg-[#0f2b0f] px-6 py-3 text-xl font-bold text-[#00ff00] transition hover:bg-[#00ff00] hover:text-black hover:shadow-[0_0_14px_rgba(0,255,0,0.5)]"
+                    className="inline-block border border-[#00ff00] bg-[#0f2b0f] px-6 py-3 text-xl font-bold text-[#00ff00] transition hover:bg-[#00ff00] hover:text-[#ffffff]"
                 >
                     VIEW_RANKINGS
                 </Link>
@@ -169,14 +169,14 @@ export default function QuizClient({
                 <button
                     onClick={() => handleAnswer("A")}
                     disabled={isSubmitting}
-                    className="border border-[#00ff00] bg-[#0f2b0f] p-3 text-left text-xl text-[#00ff00] transition hover:bg-[#00ff00] hover:text-black hover:shadow-[0_0_14px_rgba(0,255,0,0.5)] disabled:cursor-not-allowed disabled:opacity-50"
+                    className="border border-[#00ff00] bg-[#0f2b0f] p-3 text-left text-xl text-[#00ff00] transition hover:bg-[#00ff00] hover:text-[#ffffff] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     {currentQuestion.optionA?.label ?? "Unavailable option"}
                 </button>
                 <button
                     onClick={() => handleAnswer("B")}
                     disabled={isSubmitting}
-                    className="border border-[#00ff00] bg-[#0f2b0f] p-3 text-left text-xl text-[#00ff00] transition hover:bg-[#00ff00] hover:text-black hover:shadow-[0_0_14px_rgba(0,255,0,0.5)] disabled:cursor-not-allowed disabled:opacity-50"
+                    className="border border-[#00ff00] bg-[#0f2b0f] p-3 text-left text-xl text-[#00ff00] transition hover:bg-[#00ff00] hover:text-[#ffffff] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     {currentQuestion.optionB?.label ?? "Unavailable option"}
                 </button>

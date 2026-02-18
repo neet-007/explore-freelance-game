@@ -32,7 +32,7 @@ export default function PlayContainer({
                 <button
                     onClick={() => trimmedUsername.length > 0 && setIsReady(true)}
                     disabled={trimmedUsername.length === 0}
-                    className="w-full border border-[#00ff00] bg-[#00ff00] py-3 text-xl font-bold text-black transition hover:bg-black hover:text-[#00ff00] hover:shadow-[0_0_14px_rgba(0,255,0,0.5)] disabled:cursor-not-allowed disabled:opacity-50"
+                    className="w-full border border-[#00ff00] bg-[#00ff00] py-3 text-xl font-bold text-black transition hover:bg-black hover:text-[#ffffff] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     INITIALIZE_SESSION
                 </button>

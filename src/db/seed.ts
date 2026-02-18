@@ -8,7 +8,7 @@ async function seed() {
         { label: "Accept (Great for Rep)", money: 0, energy: -10, rep: 5 },
         { label: "Decline (Save Energy)", money: 0, energy: 0, rep: -2 },
         { label: "Work through the night", money: 200, energy: -40, rep: 5 },
-        { label: "Go to sleep", money: 0, energy: 20, rep: 0 },
+        { label: "Go to sleep", money: -20, energy: 20, rep: 0 },
     ]).returning();
 
     await db.insert(questions).values([

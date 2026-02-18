@@ -52,5 +52,6 @@ export function computeStatsFromAnswers(
 }
 
 export function getScore(stats: { money: number; energy: number; rep: number }) {
+    if (stats.money <= 0) return 0;
     return Math.max(Math.round((stats.money + stats.energy + stats.rep) / 3), 0);
 }
