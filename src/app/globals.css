@@ -2,6 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  @keyframes centerGlow {
+    0%, 100% {
+      opacity: 0.0;
+      transform: scale(0.9);
+      filter: blur(12px);
+    }
+    50% {
+      opacity: 0.75;
+      transform: scale(1.15);
+      filter: blur(18px);
+    }
+  }
+  .center-glow {
+    animation: centerGlow 1.8s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
