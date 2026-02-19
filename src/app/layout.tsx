@@ -19,7 +19,7 @@ const decos: Deco[] = [
     {
         src: "/AI.png",
         alt: "star",
-        className: "top-[80%] right-[45%] w-9 opacity-60 -rotate-12",
+        className: "top-[80%] right-[80%] w-9 opacity-60 -rotate-12",
         delayClass: "[animation-delay:0.2s]",
     },
     {
@@ -31,25 +31,25 @@ const decos: Deco[] = [
     {
         src: "/Cyber security.png",
         alt: "bolt",
-        className: "top-[60%] right-[20%] w-12 opacity-50 rotate-12",
+        className: "top-[75%] right-[50%] w-12 opacity-50 rotate-12",
         delayClass: "[animation-delay:0.6s]",
     },
     {
         src: "/Game Development.png",
         alt: "spark",
-        className: "top-[80%] right-[60%] w-9 opacity-60 -rotate-12",
+        className: "top-[80%] right-[10%] w-9 opacity-60 -rotate-12",
         delayClass: "[animation-delay:1.6s]",
     },
     {
         src: "/Freelancing.png",
         alt: "spark",
-        className: "top-[10%] right-[80%] w-10 opacity-60 rotate-6",
+        className: "top-[15%] right-[80%] w-15 opacity-100 rotate-6",
         delayClass: "[animation-delay:1.6s]",
     },
     {
         src: "/Graphic.png",
         alt: "spark",
-        className: "top-[50%] right-[80%] w-9 opacity-60 -rotate-12",
+        className: "top-[15%] right-[40%] w-9 opacity-60 -rotate-12",
         delayClass: "[animation-delay:1.6s]",
     },
 ];

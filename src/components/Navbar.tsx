@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function Navbar() {
     return (
         <div className="flex flex-col gap-[1rem]">
-            <nav className="border-b-2 border-[#00ff00] bg-[#121212] px-4 py-5">
+            <nav className="border-b-2 border-[#00ff00] bg-[#121212] px-[1rem] py-[0.5rem]">
                 <div className="mx-auto flex w-full max-w-5xl items-center justify-between">
                     <Link href="/" className="text-2xl font-bold text-[#00ff00] md:text-3xl">
                         THE FREELANCE GRIND
@@ -24,7 +24,7 @@ export default function Navbar() {
                     </div>
                 </div>
             </nav>
-            <img src="/EEEXPLORE-logo.png" alt="EEExplore Logo" className="max-w-[12rem] max-h-auto" />
+            <img src="/EEEXPLORE-logo.png" alt="EEExplore Logo" className="max-w-[12rem] max-h-auto ml-[1rem]" />
         </div>
     );
 }

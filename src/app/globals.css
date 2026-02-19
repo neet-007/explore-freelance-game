@@ -3,21 +3,23 @@
 @tailwind utilities;
 
 @layer utilities {
-  @keyframes centerGlow {
-    0%, 100% {
-      opacity: 0.0;
-      transform: scale(0.9);
-      filter: blur(12px);
-    }
-    50% {
-      opacity: 0.75;
-      transform: scale(1.15);
-      filter: blur(18px);
-    }
+@keyframes glowPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 0 rgba(255,215,0,0));
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
   }
-  .center-glow {
-    animation: centerGlow 1.8s ease-in-out infinite;
+  50% {
+    filter:
+      drop-shadow(0 0 14px rgba(255,215,0,0.95))
+      drop-shadow(0 0 28px rgba(255,215,0,0.45));
+    transform: translate(-50%, -50%) scale(1.08);
+    opacity: 1;
   }
+}
+.star-glow {
+  animation: glowPulse 1.6s ease-in-out infinite;
+    }
 
   @keyframes float {
     0%, 100% {
