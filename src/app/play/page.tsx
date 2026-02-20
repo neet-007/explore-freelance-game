@@ -6,7 +6,7 @@ export default async function PlayPage() {
     const timeLimitSeconds = getGameTimeLimitSeconds();
 
     return (
-        <main className="page-shell">
+        <main className="page-shell flex items-center justify-center">
             <PlayContainer questions={questions} timeLimitSeconds={timeLimitSeconds} />
         </main>
     );

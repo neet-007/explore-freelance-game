@@ -31,7 +31,7 @@ export default function LeaderboardList({ initialScores }: { initialScores: Scor
 
     return (
         <>
-            <table className="w-full text-left text-lg md:text-xl">
+            <table className="w-full text-left text-lg p-[1rem] md:text-xl">
                 <thead>
                     <tr className="text-base uppercase text-[#6ea66e] md:text-lg">
                         <th className="pb-4 font-medium">Rank</th>

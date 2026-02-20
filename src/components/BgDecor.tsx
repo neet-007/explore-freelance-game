@@ -18,7 +18,7 @@ export default function BackgroundDecor({
         <div className={["absolute animate-float z-[-100]", extraClass].filter(Boolean).join(" ")}>
             {isFreelancing && (
                 <img
-                    src="/Freelancing-star.png"
+                    src="/Freelancing-star.webp"
                     alt=""
                     className={`absolute pointer-events-none star-glow ${sizeClass} w-auto select-none block`}
                     style={{

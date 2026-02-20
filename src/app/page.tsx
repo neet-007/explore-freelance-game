@@ -22,13 +22,13 @@ export default function Home() {
                 <div className="flex flex-col gap-3 md:flex-row md:justify-center">
                     <Link
                         href="/play"
-                        className="border-2 border-[#00ff00] bg-[#0f2b0f] px-8 py-3 text-center text-xl font-bold text-[#00ff00] transition hover:bg-[#00ff00] hover:text-[#ffffff]"
+                        className="border-2 border-[#00ff00] bg-[#0f2b0f] px-[2rem] py-[0.5rem] text-center text-xl font-bold text-[#00ff00] transition hover:bg-[#00ff00] hover:text-[#000000] no-underline"
                     >
                         INITIALIZE_GAME
                     </Link>
                     <Link
                         href="/leaderboard"
-                        className="border border-[#00ff00] bg-[#0f2b0f] px-8 py-3 text-center text-xl font-bold text-[#00ff00] transition hover:bg-[#00ff00] hover:text-[#ffffff]"
+                        className="border border-[#00ff00] bg-[#0f2b0f] px-[2rem] py-[0.5rem] text-center text-xl font-bold text-[#00ff00] transition hover:bg-[#00ff00] hover:text-[#000000] no-underline"
                     >
                         VIEW_RANKINGS
                     </Link>

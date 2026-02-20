@@ -110,7 +110,7 @@ export default function QuizClient({
                     : "The deadline reached zero.";
 
         return (
-            <div className="mx-auto w-full max-w-[420px] border-2 border-[#00ff00] bg-[#1e1e1e] p-6 text-center shadow-[0_0_20px_rgba(0,255,0,0.2)]">
+            <div className="mx-auto w-full max-w-[420px] border-2 border-[#00ff00] bg-[#1e1e1e] p-[0.5rem] text-center shadow-[0_0_20px_rgba(0,255,0,0.2)]">
                 <h2 className="mb-2 text-3xl font-bold text-red-400">GAME OVER</h2>
                 <p className="mb-6 text-lg text-[#9ad79a]">{subtitle}</p>
                 <div className="mb-6 grid grid-cols-3 gap-2 text-base">
@@ -131,7 +131,7 @@ export default function QuizClient({
                 <p className="mb-5 text-xl font-bold text-[#00ff00]">{title.toUpperCase()}</p>
                 <Link
                     href="/leaderboard"
-                    className="inline-block border border-[#00ff00] bg-[#0f2b0f] px-6 py-3 text-xl font-bold text-[#00ff00] transition hover:bg-[#00ff00] hover:text-[#ffffff]"
+                    className="inline-block border border-[#00ff00] bg-[#0f2b0f] px-[2rem] py-[0.5rem] text-xl font-bold text-[#00ff00] transition hover:bg-[#00ff00] hover:text-[#000000]"
                 >
                     VIEW_RANKINGS
                 </Link>
@@ -148,7 +148,7 @@ export default function QuizClient({
     }
 
     return (
-        <div className="mx-auto w-full max-w-[420px] border-2 border-[#00ff00] bg-[#1e1e1e] p-5 shadow-[0_0_20px_rgba(0,255,0,0.2)]">
+        <div className="mx-auto w-full max-w-[420px] border-2 border-[#00ff00] bg-[#1e1e1e] p-[0.5rem] shadow-[0_0_20px_rgba(0,255,0,0.2)]">
             <div className="mb-4 flex justify-between border-b border-[#333] pb-2 text-base font-bold text-white">
                 <span>💰 ${money}</span>
                 <span>☕ {energy}%</span>
@@ -169,14 +169,14 @@ export default function QuizClient({
                 <button
                     onClick={() => handleAnswer("A")}
                     disabled={isSubmitting}
-                    className="border border-[#00ff00] bg-[#0f2b0f] p-3 text-left text-xl text-[#00ff00] transition hover:bg-[#00ff00] hover:text-[#ffffff] disabled:cursor-not-allowed disabled:opacity-50"
+                    className="border border-[#00ff00] bg-[#0f2b0f] px-[2rem] py-[0.5rem] text-left text-xl text-[#00ff00] transition hover:bg-[#00ff00] hover:text-[#000000] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     {currentQuestion.optionA?.label ?? "Unavailable option"}
                 </button>
                 <button
                     onClick={() => handleAnswer("B")}
                     disabled={isSubmitting}
-                    className="border border-[#00ff00] bg-[#0f2b0f] p-3 text-left text-xl text-[#00ff00] transition hover:bg-[#00ff00] hover:text-[#ffffff] disabled:cursor-not-allowed disabled:opacity-50"
+                    className="border border-[#00ff00] bg-[#0f2b0f] px-[2rem] py-[0.5rem] text-left text-xl text-[#00ff00] transition hover:bg-[#00ff00] hover:text-[#000000] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     {currentQuestion.optionB?.label ?? "Unavailable option"}
                 </button>
