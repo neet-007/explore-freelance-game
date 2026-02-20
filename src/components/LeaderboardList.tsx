@@ -31,19 +31,19 @@ export default function LeaderboardList({ initialScores }: { initialScores: Scor
 
     return (
         <>
-            <table className="w-full text-left text-lg p-[1rem] md:text-xl">
+            <table className="w-full table-fixed text-left text-base md:text-xl">
                 <thead>
                     <tr className="text-base uppercase text-[#6ea66e] md:text-lg">
-                        <th className="pb-4 font-medium">Rank</th>
+                        <th className="w-[5.5rem] pb-4 font-medium">Rank</th>
                         <th className="pb-4 font-medium">Alias</th>
-                        <th className="pb-4 text-right font-medium">Score</th>
+                        <th className="w-[5.5rem] pb-4 text-right font-medium">Score</th>
                     </tr>
                 </thead>
                 <tbody>
                     {scores.map((entry, index) => (
                         <tr key={entry.id} className="border-t border-[#333] hover:bg-black/40">
                             <td className="py-3 text-[#6ea66e]">#{String(index + 1).padStart(2, "0")}</td>
-                            <td className="py-3 font-bold text-white">{entry.username}</td>
+                            <td className="py-3 pr-2 font-bold text-white break-all">{entry.username}</td>
                             <td className="py-3 text-right font-bold text-[#00ff00]">{entry.score}</td>
                         </tr>
                     ))}
