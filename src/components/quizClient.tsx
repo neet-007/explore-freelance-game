@@ -1,14 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { submitScore } from "@/app/actions";
 import Link from "next/link";
-import {
-    Answer,
-    FinishReason,
-    GameQuestion,
-    INITIAL_STATS,
-} from "@/lib/game-shared";
+
+import { startRun, submitScore } from "@/app/actions";
+import { Answer, FinishReason, GameQuestion, INITIAL_STATS } from "@/lib/game-shared";
 
 export default function QuizClient({
     questions,
@@ -24,49 +20,89 @@ export default function QuizClient({
     const [money, setMoney] = useState<number>(INITIAL_STATS.money);
     const [rep, setRep] = useState<number>(INITIAL_STATS.rep);
     const [answers, setAnswers] = useState<Answer[]>([]);
+
     const [secondsLeft, setSecondsLeft] = useState(timeLimitSeconds);
+
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [hasSavedScore, setHasSavedScore] = useState(false);
     const [finishReason, setFinishReason] = useState<FinishReason | null>(null);
 
+    const [runToken, setRunToken] = useState<string | null>(null);
+    const [expiresAtMs, setExpiresAtMs] = useState<number | null>(null);
+    const [runError, setRunError] = useState<string | null>(null);
+
+    // Start run -> get token + server deadline
     useEffect(() => {
-        if (finishReason) return;
-
-        const timer = setInterval(() => {
-            setSecondsLeft((prev) => {
-                if (prev <= 1) {
-                    setFinishReason("timer");
-                    clearInterval(timer);
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
-
-        return () => clearInterval(timer);
-    }, [finishReason]);
-
-    useEffect(() => {
-        if (!finishReason || hasSavedScore) return;
-
         let cancelled = false;
+
         (async () => {
-            await submitScore(username, answers);
-            if (!cancelled) {
-                setHasSavedScore(true);
+            const res = await startRun(username, timeLimitSeconds);
+            if (cancelled) return;
+
+            if (!res.ok) {
+                setRunError(res.error);
+                return;
             }
+
+            setRunToken(res.token);
+            setExpiresAtMs(res.expiresAtMs);
         })();
 
         return () => {
             cancelled = true;
         };
-    }, [answers, finishReason, hasSavedScore, username]);
+    }, [username, timeLimitSeconds]);
+
+    // Server-aligned timer (no trusting local countdown)
+    useEffect(() => {
+        if (!expiresAtMs || finishReason) return;
+
+        const timer = setInterval(() => {
+            const left = Math.max(0, Math.ceil((expiresAtMs - Date.now()) / 1000));
+            setSecondsLeft(left);
+            if (left <= 0) setFinishReason("timer");
+        }, 250);
+
+        return () => clearInterval(timer);
+    }, [expiresAtMs, finishReason]);
+
+    // Submit score once, server validates token + time + max answers
+    useEffect(() => {
+        if (!finishReason || hasSavedScore) return;
+        if (!runToken) return;
+
+        let cancelled = false;
+        (async () => {
+            const res = await submitScore(username, answers, runToken);
+            if (cancelled) return;
+
+            if (!res.ok) {
+                setRunError(res.error);
+            }
+
+            setHasSavedScore(true);
+        })();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [answers, finishReason, hasSavedScore, username, runToken]);
 
     const currentQuestion = questions[currentIdx];
     const roundsPlayed = useMemo(() => answers.length, [answers.length]);
 
     const handleAnswer = (selected: "A" | "B") => {
         if (!currentQuestion || finishReason || isSubmitting) return;
+
+        // Don’t play until session is issued
+        if (!runToken || !expiresAtMs) return;
+
+        // If server deadline passed, end immediately
+        if (Date.now() > expiresAtMs) {
+            setFinishReason("timer");
+            return;
+        }
+
         const selectedOption = selected === "A" ? currentQuestion.optionA : currentQuestion.optionB;
         if (!selectedOption) return;
 
@@ -74,6 +110,7 @@ export default function QuizClient({
         const newMoney = money + selectedOption.money;
         const newEnergy = energy + selectedOption.energy;
         const newRep = rep + selectedOption.rep;
+
         setIsSubmitting(true);
 
         setMoney(newMoney);
@@ -91,17 +128,29 @@ export default function QuizClient({
             setIsSubmitting(false);
             return;
         }
+
         setCurrentIdx((prev) => (prev + 1) % questions.length);
         setIsSubmitting(false);
     };
 
+    if (runError) {
+        return (
+            <div className="mx-auto w-full max-w-[420px] border-2 border-red-500 bg-[#1e1e1e] p-6 text-center text-red-200">
+                <h2 className="mb-2 text-2xl font-bold">Session Error</h2>
+                <p className="mb-4">{runError}</p>
+                <Link
+                    href="/"
+                    className="inline-block border border-red-400 bg-[#2b0f0f] px-6 py-2 font-bold text-red-200 hover:bg-red-500 hover:text-black"
+                >
+                    GO_HOME
+                </Link>
+            </div>
+        );
+    }
+
     if (finishReason) {
         const title =
-            finishReason === "money"
-                ? "Bankruptcy"
-                : finishReason === "energy"
-                    ? "Burnout"
-                    : "Time Over";
+            finishReason === "money" ? "Bankruptcy" : finishReason === "energy" ? "Burnout" : "Time Over";
         const subtitle =
             finishReason === "money"
                 ? "Your cash dropped to zero."
@@ -147,6 +196,14 @@ export default function QuizClient({
         );
     }
 
+    if (!runToken || !expiresAtMs) {
+        return (
+            <div className="mx-auto w-full max-w-[420px] border-2 border-[#00ff00] bg-[#1e1e1e] p-8 text-center text-[#9ad79a]">
+                Starting session...
+            </div>
+        );
+    }
+
     return (
         <div className="mx-auto w-full max-w-[420px] border-2 border-[#00ff00] bg-[#1e1e1e] p-[0.5rem] shadow-[0_0_20px_rgba(0,255,0,0.2)]">
             <div className="mb-4 flex justify-between border-b border-[#333] pb-2 text-base font-bold text-white">
@@ -155,6 +212,7 @@ export default function QuizClient({
                 <span>⭐ {rep}</span>
                 <span>⏱ {secondsLeft}s</span>
             </div>
+
             <div className="mb-4 border-b border-[#333] pb-2 text-base text-[#9ad79a]">
                 ROUND {roundsPlayed + 1}
             </div>
@@ -173,6 +231,7 @@ export default function QuizClient({
                 >
                     {currentQuestion.optionA?.label ?? "Unavailable option"}
                 </button>
+
                 <button
                     onClick={() => handleAnswer("B")}
                     disabled={isSubmitting}
