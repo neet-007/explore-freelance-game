@@ -76,7 +76,6 @@ export async function submitScore(username: string, answers: Answer[], token: st
         return { ok: false as const, error: "Too many answers for this time limit." };
     }
 
-    // Validate each answer shape + choice
     for (const a of answers as any[]) {
         if (!a || typeof a !== "object") {
             return { ok: false as const, error: "Malformed answer." };
@@ -86,7 +85,6 @@ export async function submitScore(username: string, answers: Answer[], token: st
         }
     }
 
-    // Validate IDs exist (prevents submitting answers for fake/nonexistent questions)
     const tokenIdSet = new Set(payload.questionIds);
     for (const a of answers) {
         if (!tokenIdSet.has(a.id)) {
@@ -94,10 +92,8 @@ export async function submitScore(username: string, answers: Answer[], token: st
         }
     }
 
-    // Compute final score from authoritative question data
     const gameQuestions = await getGameQuestions();
 
-    // Optional extra sanity: token question IDs must exist in current question set too
     const knownIds = new Set(gameQuestions.map((q) => q.id));
     for (const id of payload.questionIds) {
         if (!knownIds.has(id)) {

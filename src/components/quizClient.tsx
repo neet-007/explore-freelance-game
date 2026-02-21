@@ -31,7 +31,6 @@ export default function QuizClient({
     const [expiresAtMs, setExpiresAtMs] = useState<number | null>(null);
     const [runError, setRunError] = useState<string | null>(null);
 
-    // Start run -> get token + server deadline
     useEffect(() => {
         let cancelled = false;
 
@@ -53,7 +52,6 @@ export default function QuizClient({
         };
     }, [username, timeLimitSeconds]);
 
-    // Server-aligned timer (no trusting local countdown)
     useEffect(() => {
         if (!expiresAtMs || finishReason) return;
 
@@ -66,7 +64,6 @@ export default function QuizClient({
         return () => clearInterval(timer);
     }, [expiresAtMs, finishReason]);
 
-    // Submit score once, server validates token + time + max answers
     useEffect(() => {
         if (!finishReason || hasSavedScore) return;
         if (!runToken) return;
@@ -94,10 +91,8 @@ export default function QuizClient({
     const handleAnswer = (selected: "A" | "B") => {
         if (!currentQuestion || finishReason || isSubmitting) return;
 
-        // Don’t play until session is issued
         if (!runToken || !expiresAtMs) return;
 
-        // If server deadline passed, end immediately
         if (Date.now() > expiresAtMs) {
             setFinishReason("timer");
             return;
