@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
 import BackgroundDecor from "@/components/BgDecor";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
     title: "Freelance Run",
@@ -80,6 +81,7 @@ export default function RootLayout({
                     ))
                 }
                 {children}
+                <Analytics />
             </body>
         </html>
     );
