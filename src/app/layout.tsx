@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import "./globals.css";
 import BackgroundDecor from "@/components/BgDecor";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
     title: "Freelance Run",
@@ -82,6 +83,7 @@ export default function RootLayout({
                 }
                 {children}
                 <Analytics />
+                <SpeedInsights />
             </body>
         </html>
     );
